@@ -14,11 +14,11 @@
             --bg-color: #fcfbfa;
             --card-bg: #ffffff;
             --text-color: #333333;
-            --text-muted: #666666;
+            --text-muted: #777777;
             --border-radius: 16px;
-            --shadow: 0 10px 30px rgba(0,0,0,0.04);
-            --map-bg: #e9ecef;
-            --map-hover: #b89775;
+            --shadow: 0 10px 30px rgba(0,0,0,0.03);
+            --map-bg: #e5e8eb;
+            --map-hover: #d4bda4;
             --map-active: #2c3e50;
         }
 
@@ -29,17 +29,17 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            padding: 30px 15px;
+            padding: 40px 20px;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
         header h1 {
@@ -47,6 +47,7 @@
             color: var(--primary-color);
             font-weight: 700;
             margin-bottom: 8px;
+            letter-spacing: 1px;
         }
 
         header p {
@@ -55,64 +56,102 @@
             font-weight: 500;
         }
 
-        /* 雙欄佈局 */
+        /* 網格佈局 */
         .main-layout {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 30px;
+            gap: 40px;
+            align-items: start;
         }
 
         @media (min-width: 992px) {
             .main-layout {
-                grid-template-columns: 350px 1fr;
+                grid-template-columns: 380px 1fr;
             }
         }
 
-        /* 左側地圖面板 */
+        /* 左側專業地圖面板 */
         .map-panel {
             background: var(--card-bg);
-            padding: 25px;
+            padding: 30px 20px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: fit-content;
             position: sticky;
-            top: 20px;
+            top: 30px;
+            border: 1px solid rgba(0,0,0,0.03);
         }
 
         .map-title {
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 15px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            letter-spacing: 0.5px;
         }
 
-        /* 台灣 SVG 地圖樣式 */
-        .taiwan-map {
+        .map-wrapper {
+            position: relative;
             width: 100%;
             max-width: 280px;
-            height: auto;
+            height: 380px;
+        }
+
+        /* 精緻高解析度台灣地圖 SVG */
+        .taiwan-map {
+            width: 100%;
+            height: 100%;
         }
 
         .county {
             fill: var(--map-bg);
             stroke: #ffffff;
-            stroke-width: 1.5;
+            stroke-width: 0.8;
             cursor: pointer;
-            transition: fill 0.2s ease, transform 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* 高亮有分會的區域輪廓 */
+        .county.has-church {
+            fill: #edf1f5;
+            stroke-width: 1;
         }
 
         .county:hover {
-            fill: var(--map-hover);
+            fill: var(--map-hover) !important;
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.1));
         }
 
         .county.active {
-            fill: var(--map-active);
+            fill: var(--map-active) !important;
+        }
+
+        /* 地圖標籤與按鈕 */
+        .map-btn-all {
+            margin-top: 25px;
+            width: 85%;
+            padding: 10px 0;
+            background-color: #f4f6f8;
+            color: var(--primary-color);
+            border: 1px solid #e1e4e8;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .map-btn-all:hover, .map-btn-all.active {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
         }
 
         .map-tips {
@@ -126,7 +165,7 @@
         .content-panel {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
         }
 
         /* 搜尋列 */
@@ -136,74 +175,80 @@
             background: var(--card-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.02);
         }
 
         .search-box input {
             width: 100%;
-            padding: 16px 16px 16px 50px;
+            padding: 18px 18px 18px 55px;
             border: 1px solid transparent;
             border-radius: var(--border-radius);
             font-size: 1rem;
             outline: none;
             transition: all 0.3s ease;
+            background: transparent;
         }
 
         .search-box input:focus {
             border-color: var(--secondary-color);
-            box-shadow: 0 0 0 4px rgba(184, 151, 117, 0.1);
+            box-shadow: 0 0 0 4px rgba(184, 151, 117, 0.08);
         }
 
         .search-box i {
             position: absolute;
-            left: 20px;
+            left: 22px;
             top: 50%;
             transform: translateY(-50%);
-            color: #aaa;
+            color: #b0b5bc;
             font-size: 1.1rem;
         }
 
         /* 分會卡片網格 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 24px;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 24px;
+            padding: 26px;
             border-top: 4px solid var(--secondary-color);
             transition: transform 0.25s ease, box-shadow 0.25s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            border-left: 1px solid rgba(0,0,0,0.01);
+            border-right: 1px solid rgba(0,0,0,0.01);
+            border-bottom: 1px solid rgba(0,0,0,0.01);
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .church-name {
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary-color);
+            letter-spacing: 0.5px;
         }
 
         .region-tag {
             font-size: 0.8rem;
-            background: rgba(184, 151, 117, 0.12);
+            background: rgba(184, 151, 117, 0.1);
             color: #a27d56;
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 30px;
             font-weight: 500;
         }
@@ -211,7 +256,7 @@
         .info-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             font-size: 0.95rem;
         }
 
@@ -221,6 +266,7 @@
             width: 16px;
             text-align: center;
             color: var(--secondary-color);
+            font-size: 1rem;
         }
 
         .info-item .label {
@@ -240,14 +286,14 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 11px;
-            background-color: #f8f9fa;
+            padding: 12px;
+            background-color: #fafbfc;
             color: var(--primary-color);
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 0.9rem;
             font-weight: 500;
-            border: 1px solid #e5e5e5;
+            border: 1px solid #e6ebf0;
             transition: all 0.2s ease;
         }
 
@@ -255,12 +301,13 @@
             background-color: var(--primary-color);
             color: #fff;
             border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.15);
         }
 
         .no-results {
             text-align: center;
             grid-column: 1 / -1;
-            padding: 50px;
+            padding: 60px;
             color: var(--text-muted);
             font-size: 1.05rem;
             background: var(--card-bg);
@@ -281,39 +328,33 @@
     <div class="main-layout">
         <div class="map-panel">
             <div class="map-title">
-                <i class="fa-solid fa-map-marked-alt"></i> 台灣地圖快速篩選
+                <i class="fa-solid fa-map-location-dot" style="color: var(--secondary-color);"></i> 台灣分會地圖導覽
             </div>
             
-            <svg class="taiwan-map" viewBox="0 0 120 180">
-                <path d="M92,42 L105,48 L103,58 L91,55 L87,46 Z" class="county" data-region="宜蘭"></path>
-                <text x="94" y="52" font-size="5" fill="#555" style="pointer-events:none;">宜蘭</text>
-                
-                <path d="M83,23 L96,22 L102,33 L92,41 L81,32 Z" class="county" data-region="新北"></path>
-                <text x="88" y="31" font-size="5" fill="#555" style="pointer-events:none;">雙北</text>
-                
-                <path d="M70,30 L80,31 L84,41 L73,44 L68,36 Z" class="county" data-region="桃園"></path>
-                <text x="73" y="38" font-size="5" fill="#555" style="pointer-events:none; font-weight:bold;">桃園</text>
-                
-                <path d="M58,47 L70,45 L74,56 L61,60 Z" class="county" data-region="苗栗"></path>
-                <text x="63" y="54" font-size="5" fill="#555" style="pointer-events:none;">苗栗</text>
-                
-                <path d="M53,61 L78,57 L83,69 L57,75 Z" class="county" data-region="台中"></path>
-                <text x="63" y="68" font-size="5" fill="#555" style="pointer-events:none;">台中</text>
-                
-                <path d="M63,76 L84,70 L88,95 L65,96 Z" class="county" data-region="南投"></path>
-                <text x="71" y="86" font-size="5" fill="#555" style="pointer-events:none;">南投</text>
-                
-                <path d="M47,118 L58,114 L71,130 L55,145 L44,135 Z" class="county" data-region="高雄"></path>
-                <text x="50" y="131" font-size="5" fill="#555" style="pointer-events:none;">高雄</text>
-                
-                <path d="M69,114 L82,110 L84,148 L65,150 Z" class="county" data-region="台東"></path>
-                <text x="71" y="133" font-size="5" fill="#555" style="pointer-events:none;">台東</text>
-                
-                <rect x="15" y="150" width="35" height="15" rx="3" fill="#e9ecef" stroke="#ccc" class="county" data-region="all"></rect>
-                <text x="23" y="160" font-size="6" fill="#333" style="pointer-events:none; font-weight:500;">顯示全部</text>
-            </svg>
-            
-            <div class="map-tips">💡 點擊地圖上的縣市區塊<br>可瞬間切換該區分會</div>
+            <div class="map-wrapper">
+                <svg class="taiwan-map" viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+                    <path class="county" data-region="新北" d="M312,65 L319,62 L323,68 L314,73 Z" />
+                    <path class="county" data-region="新北" d="M294,76 C294,70 305,65 308,74 C305,82 296,82 294,76 Z" />
+                    <path class="county has-church" data-region="新北" d="M276,68 L296,55 L319,57 L337,79 L315,108 L286,97 L287,83 L274,78 Z" />
+                    <path class="county has-church" data-region="桃園" d="M245,80 L273,69 L283,96 L265,119 L241,105 L247,93 Z" />
+                    <path class="county" data-region="all" d="M222,106 L244,97 L263,121 L238,139 L225,123 Z" />
+                    <path class="county has-church" data-region="苗栗" d="M194,131 L233,124 L244,149 L213,171 L193,150 Z" />
+                    <path class="county has-church" data-region="台中" d="M172,166 L211,154 L258,154 L254,188 L203,205 L168,188 Z" />
+                    <path class="county" d="M149,202 L171,192 L193,224 L164,245 Z" />
+                    <path class="county has-church" data-region="南投" d="M197,209 L251,191 L268,255 L238,284 L192,261 Z" />
+                    <path class="county" d="M125,250 L161,248 L185,274 L142,289 Z" />
+                    <path class="county" d="M120,293 L188,279 L212,298 L191,328 L126,319 Z" />
+                    <path class="county" d="M106,331 L156,323 L185,344 L165,391 L108,370 Z" />
+                    <path class="county has-church" data-region="高雄" d="M142,393 L172,360 L204,334 L225,355 L200,455 L168,460 L160,421 L129,411 Z" />
+                    <path class="county" d="M168,465 L198,458 L209,510 L233,565 L215,575 L180,500 Z" />
+                    <path class="county has-church" data-region="宜蘭" d="M312,112 L334,84 L357,119 L321,170 L292,154 Z" />
+                    <path class="county" d="M260,195 L290,159 L318,175 L272,342 L245,330 Z" />
+                    <path class="county has-church" data-region="台東" d="M211,354 L241,335 L269,348 L229,485 L199,460 Z" />
+                </svg>
+            </div>
+
+            <button class="map-btn-all active" id="btnAll" data-region="all">顯示全台灣分會</button>
+            <div class="map-tips">💡 點擊地圖上的縣市輪廓線<br>可快速跳轉與過濾該區分會</div>
         </div>
 
         <div class="content-panel">
@@ -326,14 +367,15 @@
                 </div>
             
             <div class="no-results" id="noResults">
-                <i class="fa-regular fa-comment-dots" style="font-size: 2.5rem; margin-bottom: 12px; color:#ccc; display:block;"></i>
-                目前該區域沒有符合條件的分會資料
+                <i class="fa-regular fa-comment-dots" style="font-size: 2.5rem; margin-bottom: 15px; color:#ccc; display:block;"></i>
+                該區域目前沒有符合條件的分會資料
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    // 原始 CSV 轉換後的完美資料集
     const churchData = [
         { name: "大溪", time: "09:30:00", address: "桃園市大溪區介壽路 1267 巷 55 號", region: "桃園" },
         { name: "中壢", time: "09:30:00", address: "桃園市中壢區元化路二段47號6樓", region: "桃園" },
@@ -360,6 +402,7 @@
     const searchInput = document.getElementById('searchInput');
     const noResults = document.getElementById('noResults');
     const counties = document.querySelectorAll('.county');
+    const btnAll = document.getElementById('btnAll');
 
     let currentRegion = 'all';
     let searchQuery = '';
@@ -390,7 +433,7 @@
                 <div>
                     <div class="card-header">
                         <div class="church-name">${church.name}</div>
-                        <div class="region-tag">${church.region}</div>
+                        <div class="region-tag">${church.region === '新北' ? '雙北' : church.region + '市'}</div>
                     </div>
                     <div class="info-item">
                         <i class="fa-regular fa-clock"></i>
@@ -411,24 +454,35 @@
         });
     }
 
-    // 監聽搜尋
+    // 搜尋輸入監聽
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value.trim();
         renderCards();
     });
 
-    // 監聽地圖點選
+    // 地圖縣市點選監聽
     counties.forEach(county => {
-        // 預設讓「顯示全部」按鈕啟動
-        if(county.dataset.region === 'all') county.classList.add('active');
-
         county.addEventListener('click', function() {
+            const targetRegion = this.dataset.region;
+            if (!targetRegion) return; // 沒有分會的空白縣市不作用
+
             counties.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
+            btnAll.classList.remove('active');
             
-            currentRegion = this.dataset.region;
+            // 將同一個 Region 的所有區塊（例如雙北包含多個 path）一起點亮
+            document.querySelectorAll(`.county[data-region="${targetRegion}"]`).forEach(c => c.classList.add('active'));
+            
+            currentRegion = targetRegion;
             renderCards();
         });
+    });
+
+    // 顯示全部按鈕監聽
+    btnAll.addEventListener('click', function() {
+        counties.forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        currentRegion = 'all';
+        renderCards();
     });
 
     // 初始渲染
