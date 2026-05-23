@@ -1,357 +1,314 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>懷恩團隊 各分會主日聚會時間及地址</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #b89775;
-            --bg-color: #faf9f6; /* 優雅的溫暖米白 */
-            --panel-bg: #ffffff;
-            --text-color: #2b303a;
-            --text-muted: #888888;
-            --border-color: #eae7e2;
-            --hover-bg: #fdfdfc;
-        }
+import { useMemo, useState } from 'react';
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-        }
+export default function GraceChurchBranches() {
+  const [search, setSearch] = useState('');
+  // Google Sheet 自動同步資料（未來可串接 Apps Script API）
+  // const SHEET_API = 'https://script.google.com/macros/s/你的API網址/exec';
 
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            padding: 60px 20px;
-            -webkit-font-smoothing: antialiased;
-        }
+  const branches = [
+    { id: 1, church: '大溪', time: '09:30', address: '桃園市大溪區介壽路1267巷55號', region: '桃園' },
+    { id: 2, church: '中壢', time: '09:30', address: '桃園市中壢區元化路二段47號6樓', region: '桃園' },
+    { id: 3, church: '美地', time: '19:30', address: '桃園市平鎮區文心路100號', region: '桃園' },
+    { id: 4, church: '楊梅', time: '10:00', address: '桃園市楊梅區永美路395號5樓', region: '桃園' },
+    { id: 5, church: '高雄', time: '10:00', address: '高雄市左營區明誠二路480號5樓', region: '高雄' },
+    { id: 6, church: '新希望', time: '10:00', address: '桃園市中壢區延平路500號2樓', region: '桃園' },
+    { id: 7, church: '龍岡', time: '09:00', address: '桃園市中壢區龍岡路三段620巷15號', region: '桃園' },
+    { id: 8, church: '蘭陽', time: '10:00', address: '宜蘭縣三星鄉上將路三段735號', region: '宜蘭' },
+    { id: 9, church: '龜山', time: '10:00', address: '龜山區萬壽路二段1079號', region: '桃園' },
+    { id: 10, church: '喜信家', time: '09:30', address: '桃園市桃園區中正路1059號4樓', region: '桃園' },
+    { id: 11, church: '以馬內利', time: '10:00', address: '新北市樹林區中正路520號', region: '新北' },
+    { id: 12, church: '愛的教會', time: '10:00', address: '台中市豐原區自強街126號', region: '台中' },
+    { id: 13, church: '八德', time: '09:30', address: '桃園市八德區仁德二路1號', region: '桃園' },
+    { id: 14, church: '台東', time: '09:00', address: '台東市中華路四段131巷255號', region: '台東' },
+    { id: 15, church: '苗栗新希望', time: '10:00', address: '苗栗縣苗栗市源林街68號3樓', region: '苗栗' },
+    { id: 16, church: '宜蘭新希望', time: '10:00', address: '宜蘭縣宜蘭市宜中路222號2樓', region: '宜蘭' },
+  ];
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+          <div className="relative bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-500 text-white p-10">
+            <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=1200')] bg-cover bg-center"></div>
+            <div className="relative z-10">
+              <h1 className="text-4xl md:text-5xl font-black tracking-wide mb-4">
+                懷恩教會總部行政雲端系統
+              </h1>
+              <p className="text-lg md:text-xl opacity-90 max-w-3xl leading-relaxed">
+                Grace Church 總部行政管理平台｜整合分會、講台、行事曆、牧養、宣教與財務行政系統。
+              </p>
 
-        /* 頂級極簡標頭 */
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        header h1 {
-            font-size: 2.4rem;
-            color: var(--primary-color);
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-        }
-
-        header p {
-            color: var(--secondary-color);
-            font-size: 1.1rem;
-            font-weight: 400;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-        }
-
-        /* 高級感細線搜尋列 */
-        .search-wrapper {
-            margin-bottom: 40px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .search-box {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 14px 20px 14px 48px;
-            border: none;
-            border-bottom: 2px solid var(--border-color);
-            background: transparent;
-            font-size: 1.05rem;
-            color: var(--text-color);
-            outline: none;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            font-weight: 400;
-        }
-
-        .search-box input:focus {
-            border-bottom-color: var(--primary-color);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--secondary-color);
-            font-size: 1.1rem;
-            transition: color 0.3s;
-        }
-
-        /* 現代高端大氣表格 */
-        .table-container {
-            background: var(--panel-bg);
-            border-radius: 12px;
-            box-shadow: 0 20px 50px rgba(44, 62, 80, 0.03);
-            overflow: hidden;
-            border: 1px solid rgba(230, 225, 218, 0.6);
-        }
-
-        .table-header {
-            display: grid;
-            grid-template-columns: 140px 140px 1fr 100px;
-            padding: 20px 30px;
-            background-color: #ffffff;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: 500;
-            color: var(--secondary-color);
-            letter-spacing: 1px;
-            font-size: 0.95rem;
-        }
-
-        .table-body {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .table-row {
-            display: grid;
-            grid-template-columns: 140px 140px 1fr 100px;
-            padding: 24px 30px;
-            align-items: center;
-            border-bottom: 1px solid rgba(234, 231, 226, 0.5);
-            background-color: transparent;
-            transition: all 0.25s ease;
-        }
-
-        .table-row:last-child {
-            border-bottom: none;
-        }
-
-        .table-row:hover {
-            background-color: var(--hover-bg);
-            transform: scale(1.005);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.015);
-        }
-
-        /* 欄位樣式 */
-        .cell-church {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            letter-spacing: 0.5px;
-        }
-
-        .cell-time {
-            font-size: 1.05rem;
-            font-weight: 500;
-            color: var(--text-color);
-        }
-
-        .cell-address {
-            font-size: 1rem;
-            color: #555860;
-            padding-right: 20px;
-            font-weight: 300;
-        }
-
-        /* 極簡精緻按鈕 */
-        .cell-action {
-            text-align: right;
-        }
-
-        .btn-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            color: var(--secondary-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-            background: #ffffff;
-        }
-
-        .table-row:hover .btn-link {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border-color: var(--primary-color);
-        }
-
-        /* 無結果提示 */
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-muted);
-            font-size: 1rem;
-            letter-spacing: 1px;
-            display: none;
-        }
-
-        /* 響應式：手機板平滑轉換 */
-        @media (max-width: 768px) {
-            body {
-                padding: 40px 15px;
-            }
-            header h1 { font-size: 1.8rem; }
-            
-            .table-header {
-                display: none; /* 手機板隱藏表頭 */
-            }
-            
-            .table-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-                padding: 22px 20px;
-                position: relative;
-            }
-            
-            .cell-church {
-                font-size: 1.25rem;
-                margin-bottom: 2px;
-            }
-            
-            .cell-time::before {
-                content: "聚會時間：";
-                color: var(--text-muted);
-                font-size: 0.9rem;
-                font-weight: 400;
-            }
-            
-            .cell-address {
-                font-size: 0.95rem;
-                margin-top: 2px;
-                padding-right: 0;
-            }
-            
-            .cell-action {
-                position: absolute;
-                right: 20px;
-                top: 50%;
-                transform: translateY(-50%);
-            }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <header>
-        <h1>懷恩團隊各分會聚會表</h1>
-        <p>Sunday Service Schedule & Directory</p>
-    </header>
-
-    <div class="search-wrapper">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="搜尋分會名稱、時間或地址...">
-        </div>
-    </div>
-
-    <div class="table-container">
-        <div class="table-header">
-            <div>分會名稱</div>
-            <div>聚會時間</div>
-            <div>聚會地址</div>
-            <div style="text-align: right;">地圖導航</div>
-        </div>
-        
-        <div class="table-body" id="tableBody">
-            </div>
-        
-        <div class="no-results" id="noResults">
-            未找到相符的分會資料
-        </div>
-    </div>
-</div>
-
-<script>
-    // 嚴謹完整的一字未漏資料集
-    const churchData = [
-        { name: "大溪", time: "09:30:00", address: "桃園市大溪區介壽路 1267 巷 55 號" },
-        { name: "中壢", time: "09:30:00", address: "桃園市中壢區元化路二段47號6樓" },
-        { name: "美地", time: "19:30:00", address: "桃園市平鎮區文心路100號" },
-        { name: "楊梅", time: "10:00:00", address: "桃園市楊梅區永美路 395 號 5 樓" },
-        { name: "高雄", time: "10:00:00", address: "高雄市左營區明誠二路 480 號 5 樓" },
-        { name: "新希望", time: "10:00:00", address: "桃園市中壢區延平路500號2樓" },
-        { name: "龍岡", time: "09:00:00", address: "桃園市中壢區龍岡路三段 620 巷 15號" },
-        { name: "蘭陽", time: "10:00:00", address: "宜蘭縣三星鄉上將路三段735 號" },
-        { name: "生命活泉", time: "10:00:00", address: "台中市北區漢口路三段 1-3 號 4 樓" },
-        { name: "埔里", time: "10:00:00", address: "南投縣埔里鎮育溪路66-3號2樓" },
-        { name: "龜山", time: "10:00:00", address: "龜山區萬壽路二段 1079 號" },
-        { name: "喜信家", time: "09:30:00", address: "桃園市桃園區中正路1059號4樓" },
-        { name: "以馬內利", time: "10:00:00", address: "新北市樹林區中正路520號" },
-        { name: "愛的教會", time: "10:00:00", address: "台中市豐原區自強街126號" },
-        { name: "八德", time: "09:30:00", address: "桃園市八德區仁德二路1號" },
-        { name: "台東", time: "09:00:00", address: "台東市中華路四段 131 巷 255 號" },
-        { name: "苗栗新希望", time: "10:00:00", address: "苗栗縣苗栗市源林街68號3樓" },
-        { name: "宜蘭新希望", time: "10:00:00", address: "宜蘭縣宜蘭市宜中路222號2樓" },
-        { name: "葡萄樹", time: "10:00:00", address: "桃園市桃園區大林路20-1號" }
-    ];
-
-    const tableBody = document.getElementById('tableBody');
-    const searchInput = document.getElementById('searchInput');
-    const noResults = document.getElementById('noResults');
-
-    function renderRows(query = '') {
-        tableBody.innerHTML = '';
-        
-        const filtered = churchData.filter(church => 
-            church.name.includes(query) || 
-            church.address.includes(query) || 
-            church.time.includes(query)
-        );
-
-        if (filtered.length === 0) {
-            noResults.style.display = 'block';
-            return;
-        } else {
-            noResults.style.display = 'none';
-        }
-
-        filtered.forEach(church => {
-            const formattedTime = church.time.substring(0, 5); // 呈現如 09:30 的乾淨感
-            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(church.name === '新希望' || church.name === '美地' ? '懷恩團隊' + church.name + '教會' : church.address)}`;
-
-            const row = document.createElement('div');
-            row.className = 'table-row';
-            row.innerHTML = `
-                <div class="cell-church">${church.name}</div>
-                <div class="cell-time">${formattedTime}</div>
-                <div class="cell-address">${church.address}</div>
-                <div class="cell-action">
-                    <a href="${mapUrl}" target="_blank" class="btn-link" title="開啟 Google 地圖">
-                        <i class="fa-solid fa-arrow-right-long"></i>
-                    </a>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8">
+                <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="text-3xl font-bold">16</div>
+                  <div className="text-sm opacity-80 mt-1">全台分會</div>
                 </div>
-            `;
-            tableBody.appendChild(row);
-        });
-    }
+                <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="text-3xl font-bold">6+</div>
+                  <div className="text-sm opacity-80 mt-1">服務地區</div>
+                </div>
+                <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="text-3xl font-bold">雲端化</div>
+                  <div className="text-sm opacity-80 mt-1">即時管理</div>
+                </div>
+                <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="text-3xl font-bold">RWD</div>
+                  <div className="text-sm opacity-80 mt-1">手機版支援</div>
+                </div>
 
-    // 搜尋即時過濾
-    searchInput.addEventListener('input', (e) => {
-        renderRows(e.target.value.trim());
-    });
+                <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                  <div className="text-3xl font-bold">ERP</div>
+                  <div className="text-sm opacity-80 mt-1">總部行政系統</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-    // 初始載入
-    renderRows();
-</script>
+          <div className="grid lg:grid-cols-[280px_1fr] gap-0">
+            <aside className="bg-slate-950 text-white p-6 border-r border-slate-800">
+              <div className="text-2xl font-black mb-8">
+                Grace Church
+              </div>
 
-</body>
-</html>
+              <nav className="space-y-3">
+                {[
+                  '總部首頁',
+                  '分會管理',
+                  '講台排程',
+                  '牧者行事曆',
+                  '聚會管理',
+                  '奉獻財務',
+                  '宣教中心',
+                  '公告系統',
+                  '影音直播',
+                  'Google Sheet 同步',
+                  '系統設定',
+                  'Google 登入',
+                  'LINE 通知中心',
+                  'AI 行政助手'
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={`px-5 py-4 rounded-2xl cursor-pointer transition-all duration-300 ${
+                      idx === 0
+                        ? 'bg-blue-600 text-white shadow-lg'
+                        : 'hover:bg-slate-800 text-slate-300'
+                    }`}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </nav>
+            </aside>
+
+            <div className="p-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-800">總部各分會管理中心</h2>
+                <p className="text-slate-500 mt-1">全台分會資料、聚會資訊與行政同步管理</p>
+              </div>
+
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="搜尋分會名稱、地址、地區..."
+                  className="px-5 py-3 rounded-2xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-72"
+                />
+                <button className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg transition-all duration-300">
+                  搜尋
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {branches
+                .filter((branch) =>
+                  branch.church.includes(search) ||
+                  branch.address.includes(search) ||
+                  branch.region.includes(search)
+                )
+                .map((branch) => (
+                <div
+                  key={branch.id}
+                  className="group bg-white border border-slate-200 rounded-3xl p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden relative"
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-blue-100 rounded-full blur-3xl opacity-60"></div>
+
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-5">
+                      <div>
+                        <div className="text-sm text-slate-400 font-medium">
+                          #{branch.id}
+                        </div>
+                        <h3 className="text-2xl font-black text-slate-800 mt-1">
+                          {branch.church}
+                        </h3>
+                      </div>
+
+                      <div className="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-bold border border-blue-100">
+                        {branch.region}
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                        <div className="text-xs text-slate-400 mb-1">聚會時間</div>
+                        <div className="text-2xl font-bold text-slate-800">
+                          {branch.time}
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 min-h-[110px]">
+                        <div className="text-xs text-slate-400 mb-1">聚會地址</div>
+                        <div className="text-base leading-relaxed text-slate-700">
+                          {branch.address}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3 mt-6">
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-2xl font-semibold shadow-lg hover:opacity-90 transition-all duration-300"
+                      >
+                        Google Maps
+                      </a>
+
+                      <button className="flex-1 bg-slate-100 text-slate-700 py-3 rounded-2xl font-semibold hover:bg-slate-200 transition-all duration-300">
+                        後台編輯
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border-t border-slate-200 bg-slate-50 px-8 py-8">
+            <div className="grid md:grid-cols-5 gap-6">
+              <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                <div className="text-lg font-bold text-slate-800 mb-2">Google Maps 導航</div>
+                <div className="text-slate-600 leading-relaxed text-sm">
+                  每個分會皆可一鍵開啟 Google Maps，手機可直接導航。
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                <div className="text-lg font-bold text-slate-800 mb-2">後台可編輯</div>
+                <div className="text-slate-600 leading-relaxed text-sm">
+                  可串接 Firebase、Supabase 或 Google Sheet 後台管理。
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                <div className="text-lg font-bold text-slate-800 mb-2">Google Sheet 自動同步</div>
+                <div className="text-slate-600 leading-relaxed text-sm">
+                  更新 Google Sheet 後，網站內容會自動同步更新。
+                </div>
+              </div>
+                          <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                <div className="text-lg font-bold text-slate-800 mb-2">Firebase 雲端系統</div>
+                <div className="text-slate-600 leading-relaxed text-sm">
+                  即時資料同步、Google 登入、權限控管與雲端資料庫整合。
+                </div>
+              </div>
+                          <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+                <div className="text-lg font-bold text-slate-800 mb-2">AI 行政助手</div>
+                <div className="text-slate-600 leading-relaxed text-sm">
+                  AI 自動生成講台表、聚會安排、公告內容與行政提醒。
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 grid xl:grid-cols-3 gap-6">
+              <div className="xl:col-span-2 bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="text-2xl font-black text-slate-800">智慧行事曆管理</h3>
+                    <p className="text-slate-500 mt-1">拖拉式聚會與講台排程系統</p>
+                  </div>
+
+                  <div className="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold">
+                    Live Sync
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  {[
+                    { title: '主日聚會', time: '09:30 AM', color: 'bg-blue-50 border-blue-200' },
+                    { title: '牧者會議', time: '02:00 PM', color: 'bg-purple-50 border-purple-200' },
+                    { title: '青年聚會', time: '07:30 PM', color: 'bg-orange-50 border-orange-200' },
+                  ].map((event, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-5 rounded-2xl border ${event.color} hover:scale-[1.02] transition-all duration-300 cursor-move`}
+                    >
+                      <div className="text-lg font-bold text-slate-800">{event.title}</div>
+                      <div className="text-sm text-slate-500 mt-2">{event.time}</div>
+                      <div className="mt-4 text-xs text-slate-400">可拖拉調整行程</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-8 shadow-xl">
+                <div className="text-2xl font-black mb-6">系統核心功能</div>
+
+                <div className="space-y-4">
+                  {[
+                    'Google 帳號登入',
+                    'Firebase 雲端資料庫',
+                    '總部／分會權限管理',
+                    'LINE Notify 整合',
+                    'AI 行政助手',
+                    '直播聚會入口',
+                    'Google Sheet 同步',
+                    'PWA App 安裝'
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white/10 border border-white/10 rounded-2xl px-5 py-4 backdrop-blur-sm"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 bg-gradient-to-r from-indigo-600 to-blue-600 rounded-3xl p-8 text-white shadow-2xl">
+              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+                <div>
+                  <div className="text-3xl font-black mb-3">
+                    Grace Church Cloud ERP
+                  </div>
+                  <div className="text-white/80 text-lg max-w-3xl leading-relaxed">
+                    可部署至 Vercel／Firebase Hosting，支援手機安裝 App、即時同步與多分會管理。
+                  </div>
+                </div>
+
+                <div className="flex gap-4 flex-wrap">
+                  <button className="bg-white text-blue-700 px-6 py-4 rounded-2xl font-bold shadow-lg">
+                    進入管理後台
+                  </button>
+
+                  <button className="bg-white/15 border border-white/20 px-6 py-4 rounded-2xl font-bold backdrop-blur-md">
+                    開啟直播聚會
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-slate-950 text-slate-300 px-8 py-6 text-center text-sm">
+            © 2026 Grace Church 懷恩教會｜支派同盟・齊心宣教
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
