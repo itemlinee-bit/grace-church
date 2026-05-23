@@ -11,46 +11,42 @@
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #b89775;
-            --bg-color: #f8f9fa;
+            --bg-color: #fcfbfa;
             --card-bg: #ffffff;
             --text-color: #333333;
             --text-muted: #666666;
-            --border-radius: 12px;
-            --shadow: 0 8px 30px rgba(0,0,0,0.05);
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.04);
+            --map-bg: #e9ecef;
+            --map-hover: #b89775;
+            --map-active: #2c3e50;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            padding: 40px 20px;
+            padding: 30px 15px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* 標頭設計 */
         header {
             text-align: center;
-            margin-bottom: 40px;
-            position: relative;
+            margin-bottom: 35px;
         }
 
         header h1 {
             font-size: 2.2rem;
             color: var(--primary-color);
             font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            margin-bottom: 8px;
         }
 
         header p {
@@ -59,38 +55,94 @@
             font-weight: 500;
         }
 
-        header::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background-color: var(--secondary-color);
-            margin: 15px auto 0;
-            border-radius: 2px;
+        /* 雙欄佈局 */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
         }
 
-        /* 工具列：搜尋與篩選 */
-        .toolbar {
+        @media (min-width: 992px) {
+            .main-layout {
+                grid-template-columns: 350px 1fr;
+            }
+        }
+
+        /* 左側地圖面板 */
+        .map-panel {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
+            align-items: center;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .map-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 台灣 SVG 地圖樣式 */
+        .taiwan-map {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+        }
+
+        .county {
+            fill: var(--map-bg);
+            stroke: #ffffff;
+            stroke-width: 1.5;
+            cursor: pointer;
+            transition: fill 0.2s ease, transform 0.2s ease;
+        }
+
+        .county:hover {
+            fill: var(--map-hover);
+        }
+
+        .county.active {
+            fill: var(--map-active);
+        }
+
+        .map-tips {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* 右側內容區 */
+        .content-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 搜尋列 */
+        .search-box {
+            position: relative;
+            width: 100%;
             background: var(--card-bg);
-            padding: 20px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
         }
 
-        .search-box {
-            position: relative;
-            width: 100%;
-        }
-
         .search-box input {
             width: 100%;
-            padding: 12px 16px 12px 45px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 16px 16px 16px 50px;
+            border: 1px solid transparent;
+            border-radius: var(--border-radius);
             font-size: 1rem;
             outline: none;
             transition: all 0.3s ease;
@@ -98,81 +150,62 @@
 
         .search-box input:focus {
             border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(184, 151, 117, 0.15);
+            box-shadow: 0 0 0 4px rgba(184, 151, 117, 0.1);
         }
 
         .search-box i {
             position: absolute;
-            left: 15px;
+            left: 20px;
             top: 50%;
             transform: translateY(-50%);
             color: #aaa;
+            font-size: 1.1rem;
         }
 
-        .filter-tags {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            padding: 6px 16px;
-            background-color: #eee;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-
-        .tag.active, .tag:hover {
-            background-color: var(--primary-color);
-            color: #fff;
-        }
-
-        /* 卡片網格 */
+        /* 分會卡片網格 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 25px;
+            padding: 24px;
             border-top: 4px solid var(--secondary-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
         .church-name {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 700;
             color: var(--primary-color);
         }
 
-        .church-id {
-            font-size: 0.85rem;
-            background: #f0f0f0;
-            padding: 2px 8px;
-            border-radius: 4px;
-            color: var(--text-muted);
+        .region-tag {
+            font-size: 0.8rem;
+            background: rgba(184, 151, 117, 0.12);
+            color: #a27d56;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-weight: 500;
         }
 
         .info-item {
@@ -193,7 +226,7 @@
         .info-item .label {
             font-weight: 500;
             color: var(--text-muted);
-            min-width: 50px;
+            min-width: 45px;
         }
 
         .info-item .value {
@@ -207,14 +240,14 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 10px;
+            padding: 11px;
             background-color: #f8f9fa;
             color: var(--primary-color);
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.9rem;
             font-weight: 500;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #e5e5e5;
             transition: all 0.2s ease;
         }
 
@@ -224,25 +257,16 @@
             border-color: var(--primary-color);
         }
 
-        /* 無結果提示 */
         .no-results {
             text-align: center;
             grid-column: 1 / -1;
-            padding: 40px;
+            padding: 50px;
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
             display: none;
-        }
-
-        /* 響應式調整 */
-        @media (min-width: 768px) {
-            .toolbar {
-                flex-direction: row;
-                align-items: center;
-            }
-            .search-box {
-                width: 300px;
-            }
         }
     </style>
 </head>
@@ -254,66 +278,92 @@
         <p>主日聚會時間及地址查詢</p>
     </header>
 
-    <div class="toolbar">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="搜尋教會名稱或地址...">
+    <div class="main-layout">
+        <div class="map-panel">
+            <div class="map-title">
+                <i class="fa-solid fa-map-marked-alt"></i> 台灣地圖快速篩選
+            </div>
+            
+            <svg class="taiwan-map" viewBox="0 0 120 180">
+                <path d="M92,42 L105,48 L103,58 L91,55 L87,46 Z" class="county" data-region="宜蘭"></path>
+                <text x="94" y="52" font-size="5" fill="#555" style="pointer-events:none;">宜蘭</text>
+                
+                <path d="M83,23 L96,22 L102,33 L92,41 L81,32 Z" class="county" data-region="新北"></path>
+                <text x="88" y="31" font-size="5" fill="#555" style="pointer-events:none;">雙北</text>
+                
+                <path d="M70,30 L80,31 L84,41 L73,44 L68,36 Z" class="county" data-region="桃園"></path>
+                <text x="73" y="38" font-size="5" fill="#555" style="pointer-events:none; font-weight:bold;">桃園</text>
+                
+                <path d="M58,47 L70,45 L74,56 L61,60 Z" class="county" data-region="苗栗"></path>
+                <text x="63" y="54" font-size="5" fill="#555" style="pointer-events:none;">苗栗</text>
+                
+                <path d="M53,61 L78,57 L83,69 L57,75 Z" class="county" data-region="台中"></path>
+                <text x="63" y="68" font-size="5" fill="#555" style="pointer-events:none;">台中</text>
+                
+                <path d="M63,76 L84,70 L88,95 L65,96 Z" class="county" data-region="南投"></path>
+                <text x="71" y="86" font-size="5" fill="#555" style="pointer-events:none;">南投</text>
+                
+                <path d="M47,118 L58,114 L71,130 L55,145 L44,135 Z" class="county" data-region="高雄"></path>
+                <text x="50" y="131" font-size="5" fill="#555" style="pointer-events:none;">高雄</text>
+                
+                <path d="M69,114 L82,110 L84,148 L65,150 Z" class="county" data-region="台東"></path>
+                <text x="71" y="133" font-size="5" fill="#555" style="pointer-events:none;">台東</text>
+                
+                <rect x="15" y="150" width="35" height="15" rx="3" fill="#e9ecef" stroke="#ccc" class="county" data-region="all"></rect>
+                <text x="23" y="160" font-size="6" fill="#333" style="pointer-events:none; font-weight:500;">顯示全部</text>
+            </svg>
+            
+            <div class="map-tips">💡 點擊地圖上的縣市區塊<br>可瞬間切換該區分會</div>
         </div>
-        <div class="filter-tags" id="filterTags">
-            <span class="tag active" data-region="all">全部區域</span>
-            <span class="tag" data-region="桃園">桃園市</span>
-            <span class="tag" data-region="新北">雙北</span>
-            <span class="tag" data-region="苗栗">苗栗</span>
-            <span class="tag" data-region="台中">台中</span>
-            <span class="tag" data-region="南投">南投</span>
-            <span class="tag" data-region="宜蘭">宜蘭/蘭陽</span>
-            <span class="tag" data-region="高雄">高雄</span>
-            <span class="tag" data-region="台東">台東</span>
-        </div>
-    </div>
 
-    <div class="grid" id="churchGrid">
+        <div class="content-panel">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="輸入分會名稱、關鍵字或地址搜尋...">
+            </div>
+
+            <div class="grid" id="churchGrid">
+                </div>
+            
+            <div class="no-results" id="noResults">
+                <i class="fa-regular fa-comment-dots" style="font-size: 2.5rem; margin-bottom: 12px; color:#ccc; display:block;"></i>
+                目前該區域沒有符合條件的分會資料
+            </div>
         </div>
-    
-    <div class="no-results" id="noResults">
-        <i class="fa-regular fa-folder-open" style="font-size: 2rem; margin-bottom: 10px; display:block;"></i>
-        沒有找到符合條件的分會
     </div>
 </div>
 
 <script>
-    // 原始 CSV 轉換後的 JSON 資料
     const churchData = [
-        { id: 1, name: "大溪", time: "09:30:00", address: "桃園市大溪區介壽路 1267 巷 55 號", region: "桃園" },
-        { id: 2, name: "中壢", time: "09:30:00", address: "桃園市中壢區元化路二段47號6樓", region: "桃園" },
-        { id: 3, name: "美地", time: "19:30:00", address: "桃園市平鎮區文心路100號", region: "桃園" },
-        { id: 4, name: "楊梅", time: "10:00:00", address: "桃園市楊梅區永美路 395 號 5 樓", region: "桃園" },
-        { id: 5, name: "高雄", time: "10:00:00", address: "高雄市左營區明誠二路 480 號 5 樓", region: "高雄" },
-        { id: 6, name: "新希望", time: "10:00:00", address: "桃園市中壢區延平路500號2樓", region: "桃園" },
-        { id: 7, name: "龍岡", time: "09:00:00", address: "桃園市中壢區龍岡路三段 620 巷 15號", region: "桃園" },
-        { id: 8, name: "蘭陽", time: "10:00:00", address: "宜蘭縣三星鄉上將路三段735 號", region: "宜蘭" },
-        { id: 9, name: "生命活泉", time: "10:00:00", address: "台中市北區漢口路三段 1-3 號 4 樓", region: "台中" },
-        { id: 10, name: "埔里", time: "10:00:00", address: "南投縣埔里鎮育溪路66-3號2樓", region: "南投" },
-        { id: 11, name: "龜山", time: "10:00:00", address: "龜山區萬壽路二段 1079 號", region: "桃園" },
-        { id: 12, name: "喜信家", time: "09:30:00", address: "桃園市桃園區中正路1059號4樓", region: "桃園" },
-        { id: 13, name: "以馬內利", time: "10:00:00", address: "新北市樹林區中正路520號", region: "新北" },
-        { id: 14, name: "愛的教會", time: "10:00:00", address: "台中市豐原區自強街126號", region: "台中" },
-        { id: 15, name: "八德", time: "09:30:00", address: "桃園市八德區仁德二路1號", region: "桃園" },
-        { id: 16, name: "台東", time: "09:00:00", address: "台東市中華路四段 131 巷 255 號", region: "台東" },
-        { id: 17, name: "苗栗新希望", time: "10:00:00", address: "苗栗縣苗栗市源林街68號3樓", region: "苗栗" },
-        { id: 18, name: "宜蘭新希望", time: "10:00:00", address: "宜蘭縣宜蘭市宜中路222號2樓", region: "宜蘭" },
-        { id: 19, name: "葡萄樹", time: "10:00:00", address: "桃園市桃園區大林路20-1號", region: "桃園" }
+        { name: "大溪", time: "09:30:00", address: "桃園市大溪區介壽路 1267 巷 55 號", region: "桃園" },
+        { name: "中壢", time: "09:30:00", address: "桃園市中壢區元化路二段47號6樓", region: "桃園" },
+        { name: "美地", time: "19:30:00", address: "桃園市平鎮區文心路100號", region: "桃園" },
+        { name: "楊梅", time: "10:00:00", address: "桃園市楊梅區永美路 395 號 5 樓", region: "桃園" },
+        { name: "高雄", time: "10:00:00", address: "高雄市左營區明誠二路 480 號 5 樓", region: "高雄" },
+        { name: "新希望", time: "10:00:00", address: "桃園市中壢區延平路500號2樓", region: "桃園" },
+        { name: "龍岡", time: "09:00:00", address: "桃園市中壢區龍岡路三段 620 巷 15號", region: "桃園" },
+        { name: "蘭陽", time: "10:00:00", address: "宜蘭縣三星鄉上將路三段735 號", region: "宜蘭" },
+        { name: "生命活泉", time: "10:00:00", address: "台中市北區漢口路三段 1-3 號 4 樓", region: "台中" },
+        { name: "埔里", time: "10:00:00", address: "南投縣埔里鎮育溪路66-3號2樓", region: "南投" },
+        { name: "龜山", time: "10:00:00", address: "龜山區萬壽路二段 1079 號", region: "桃園" },
+        { name: "喜信家", time: "09:30:00", address: "桃園市桃園區中正路1059號4樓", region: "桃園" },
+        { name: "以馬內利", time: "10:00:00", address: "新北市樹林區中正路520號", region: "新北" },
+        { name: "愛的教會", time: "10:00:00", address: "台中市豐原區自強街126號", region: "台中" },
+        { name: "八德", time: "09:30:00", address: "桃園市八德區仁德二路1號", region: "桃園" },
+        { name: "台東", time: "09:00:00", address: "台東市中華路四段 131 巷 255 號", region: "台東" },
+        { name: "苗栗新希望", time: "10:00:00", address: "苗栗縣苗栗市源林街68號3樓", region: "苗栗" },
+        { name: "宜蘭新希望", time: "10:00:00", address: "宜蘭縣宜蘭市宜中路222號2樓", region: "宜蘭" },
+        { name: "葡萄樹", time: "10:00:00", address: "桃園市桃園區大林路20-1號", region: "桃園" }
     ];
 
     const grid = document.getElementById('churchGrid');
     const searchInput = document.getElementById('searchInput');
-    const filterTags = document.getElementById('filterTags');
     const noResults = document.getElementById('noResults');
+    const counties = document.querySelectorAll('.county');
 
     let currentRegion = 'all';
     let searchQuery = '';
 
-    // 渲染卡片函數
     function renderCards() {
         grid.innerHTML = '';
         
@@ -331,10 +381,7 @@
         }
 
         filtered.forEach(church => {
-            // 格式化時間 (去掉後秒數，呈現更乾淨如 09:30)
             const formattedTime = church.time.substring(0, 5);
-            
-            // 產生 Google 地圖搜尋連結
             const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(church.name === '新希望' || church.name === '美地' ? '懷恩團隊' + church.name + '教會' : church.address)}`;
 
             const card = document.createElement('div');
@@ -343,7 +390,7 @@
                 <div>
                     <div class="card-header">
                         <div class="church-name">${church.name}</div>
-                        <div class="church-id">序號 ${church.id}</div>
+                        <div class="region-tag">${church.region}</div>
                     </div>
                     <div class="info-item">
                         <i class="fa-regular fa-clock"></i>
@@ -364,20 +411,24 @@
         });
     }
 
-    // 監聽搜尋輸入
+    // 監聽搜尋
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value.trim();
         renderCards();
     });
 
-    // 監聽標籤篩選
-    filterTags.addEventListener('click', (e) => {
-        if (e.target.classList.contains('tag')) {
-            document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
-            e.target.classList.add('active');
-            currentRegion = e.target.dataset.region;
+    // 監聽地圖點選
+    counties.forEach(county => {
+        // 預設讓「顯示全部」按鈕啟動
+        if(county.dataset.region === 'all') county.classList.add('active');
+
+        county.addEventListener('click', function() {
+            counties.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            
+            currentRegion = this.dataset.region;
             renderCards();
-        }
+        });
     });
 
     // 初始渲染
